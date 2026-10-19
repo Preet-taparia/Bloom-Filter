@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable
 
-from validation import (
+from bloom.validation import (
     require_fraction,
     require_int,
     require_open_probability,

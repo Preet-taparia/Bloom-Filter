@@ -1,28 +1,37 @@
-Bloom Filters & Counting Bloom Filters — Details & Scope
+# Bloom Filters and Counting Bloom Filters
 
-Project Idea: Explore space-efficient probabilistic set-membership filters and their role in minimizing disk and network queries.
+Implementation, experiments and a simulated URL filter workload for standard, counting and layered Bloom filters.
 
-Expectations: Implement standard and counting Bloom filters with configurable hash functions. Quantify false positive rates across parameter choices and test on a simulated web cache or URL filter workload.
+## Layout
 
-Suggested References: Bloom 1970; Broder & Mitzenmacher 2004.
+* src/bloom: hashing, standard filter, counting filter, layered filter, theory formulas, validation
+* src/simulation: experiments and the web cache workload
+* src/reporting: tables, plots and the report builder
+* src/cli: command line interface
+* tests: unit tests
 
-https://www.cs.princeton.edu/courses/archive/spr05/cos598E/bib/p422-bloom.pdf
+## Usage
 
-https://www.cs.cornell.edu/courses/cs619/2004fa/documents/BloomFilterSurvey.pdf
+Run from the project root.
 
+    python main.py demo
+    python main.py fpr --n 2000
+    python main.py optimal --bits 8
+    python main.py layered --layers 1 2 3 4
+    python main.py counting
+    python main.py workload
+    python main.py report --out output
+    python main.py report --quick --out output
 
-space efficient probablistic data structure, used to answer is "this element" in the "set" with firm no, or probably yes, gives false positive, no false negatives, less memory -> less accuracy, cant remove item it never forgets. need to be space constrained, tolerate false positive, querry for membership in the set
+The report command writes CSV tables, PNG plots and results.md into the output folder.
 
-bloom filters are used in network router, databases, web browsers, LSM Trees, caching, password validotr, content relevance, malicous url, username, spell checker 
+## Tests
 
-uses k hash functions, uses buckets
+    python -m unittest discover tests
 
-lower false +ve rate
+## Design notes
 
-optimal number of hash functions, k = ln(2) * (array size / estimated number of inserted objects)
-
-increase array size
-
-use multiple bloom filters (cross checking )
-
-counting bloom filters uses counters instead of bits so that we can remove element
+* Hash positions come from one blake2b digest split into two 64 bit values and combined by double hashing. Each layer or trial uses a different seed as the blake2b salt.
+* The counting filter uses saturating counters. A saturated counter is never decremented, which keeps the no false negative guarantee at the cost of a few stuck counters.
+* Layered filters split the error budget with split_error_budget. Under a fixed total memory, layering does not beat one larger filter, and the experiments show this.
+* Counting filter memory is counter_bits times a standard filter of the same length, reported by memory_bits.

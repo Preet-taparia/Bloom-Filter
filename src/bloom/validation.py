@@ -2,7 +2,7 @@ import math
 from collections.abc import Collection
 from typing import TypeVar
 
-from exceptions import InvalidParameterError
+from bloom.exceptions import InvalidParameterError
 
 ChoiceT = TypeVar("ChoiceT")
 

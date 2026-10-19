@@ -1,0 +1,21 @@
+epoch,strategy,wasted_rate
+1,no filter,1.0
+1,standard stale,0.00925
+1,standard rebuilt,0.00925
+1,counting,0.00925
+2,no filter,1.0
+2,standard stale,0.09522598690483758
+2,standard rebuilt,0.006738287457885703
+2,counting,0.006166168711461446
+3,no filter,1.0
+3,standard stale,0.1829583412113191
+3,standard rebuilt,0.012289657780298733
+3,counting,0.007247746896073612
+4,no filter,1.0
+4,standard stale,0.279940305932098
+4,standard rebuilt,0.006529038676781495
+4,counting,0.008207934336525308
+5,no filter,1.0
+5,standard stale,0.36607981956017793
+5,standard rebuilt,0.006829146043480985
+5,counting,0.006515882463504793
