@@ -1,17 +1,18 @@
 class BloomError(Exception):
-    pass
+    """Base exception for Bloom filter errors."""
+
 
 class InvalidParameterError(BloomError, ValueError):
-    pass
+    """Raised when a parameter has an invalid type or value."""
 
 
 class UnsupportedOperationError(BloomError):
-    pass
+    """Raised when an operation is not supported."""
 
 
 class IncompatibleFilterError(BloomError):
-    pass
+    """Raised when Bloom filters are incompatible."""
 
 
 class SerializationError(BloomError):
-    pass
+    """Raised when serialization or deserialization fails."""
