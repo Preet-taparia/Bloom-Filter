@@ -63,23 +63,6 @@ class CountingBloomFilter(BloomBase):
         """Largest value currently held by any counter."""
         return max(self._storage)
 
-    def _new_storage(self) -> bytearray:
-        return bytearray(self._size)
-
-    def _is_occupied(self, index: int) -> bool:
-        return self._storage[index] != 0
-
-    def _occupy(self, index: int) -> bool:
-        value = self._storage[index]
-
-        if value == self._max_value:
-            self._overflow_events += 1
-            return False
-
-        self._storage[index] = value + 1
-
-        return value == 0
-
     def remove(self, item: object) -> bool:
         """Remove one occurrence of an item if it appears to be present.
 
@@ -128,6 +111,23 @@ class CountingBloomFilter(BloomBase):
             self._item_count,
             self._counter_bits,
         )
+
+    def _new_storage(self) -> bytearray:
+        return bytearray(self._size)
+
+    def _is_occupied(self, index: int) -> bool:
+        return self._storage[index] != 0
+
+    def _occupy(self, index: int) -> bool:
+        value = self._storage[index]
+
+        if value == self._max_value:
+            self._overflow_events += 1
+            return False
+
+        self._storage[index] = value + 1
+
+        return value == 0
 
     def _describe(self) -> str:
         return f"{super()._describe()}, counter_bits={self._counter_bits}"

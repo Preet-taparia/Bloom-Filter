@@ -1,7 +1,7 @@
 import copy
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
-from typing import Any, TypeVar
+from typing import Any, Self
 
 from Bloom.Exceptions import AllocationError
 from Bloom.Hashing import MAX_SEED, hash_indexes
@@ -13,65 +13,13 @@ from Bloom.Theory import (
 )
 from Bloom.Validation import require_int
 
-FilterT = TypeVar("FilterT", bound="BloomBase")
 
-
-class MembershipFilter(ABC):
-    """Common interface of every approximate membership filter.
-
-    Subclasses answer "possibly present" or "definitely absent". They never
-    produce false negatives for items that were added and not removed, but
-    may produce false positives at a predictable rate.
-    """
-
-    @property
-    @abstractmethod
-    def item_count(self) -> int:
-        """Number of insertions performed since creation or the last clear."""
-
-    @property
-    @abstractmethod
-    def memory_bits(self) -> int:
-        """Theoretical storage requirement in bits."""
-
-    @property
-    @abstractmethod
-    def memory_bytes(self) -> int:
-        """Theoretical storage requirement in whole bytes."""
-
-    @abstractmethod
-    def add(self, item: object) -> bool:
-        """Insert an item.
-
-        Returns:
-            True if the insertion changed what the filter reports, meaning
-            at least one slot became occupied. False means the item was
-            already reported as present.
-        """
-
-    @abstractmethod
-    def __contains__(self, item: object) -> bool:
-        """Return True if the item is possibly present, False if absent."""
-
-    @abstractmethod
-    def clear(self) -> None:
-        """Remove every item and reset all statistics."""
-
-    @abstractmethod
-    def expected_false_positive_rate(self) -> float:
-        """Theoretical false positive probability at the current load."""
-
-    def update(self, items: Iterable[object]) -> None:
-        """Insert every item from an iterable."""
-        for item in items:
-            self.add(item)
-
-    def __len__(self) -> int:
-        return self.item_count
-
-
-class BloomBase(MembershipFilter):
+class BloomBase(ABC):
     """Shared implementation for filters built on a fixed array of slots.
+
+    Answers "possibly present" or "definitely absent". Items that were added
+    and not removed are never reported absent, but absent items may be
+    reported present at a predictable rate.
 
     Subclasses decide how a slot is stored by implementing four hooks:
     slot_bits, _new_storage, _is_occupied and _occupy. Hashing, sizing,
@@ -99,12 +47,12 @@ class BloomBase(MembershipFilter):
 
     @classmethod
     def from_capacity(
-        cls: type[FilterT],
+        cls,
         capacity: int,
         error_rate: float,
         seed: int = 0,
         **options: Any,
-    ) -> FilterT:
+    ) -> Self:
         """Build a filter sized for a capacity and a target error rate.
 
         Args:
@@ -128,35 +76,6 @@ class BloomBase(MembershipFilter):
     @abstractmethod
     def slot_bits(self) -> int:
         """Number of bits one slot logically occupies."""
-
-    @abstractmethod
-    def _new_storage(self) -> bytearray:
-        """Return freshly zeroed backing storage for size slots."""
-
-    @abstractmethod
-    def _is_occupied(self, index: int) -> bool:
-        """Return True if the slot at index is occupied."""
-
-    @abstractmethod
-    def _occupy(self, index: int) -> bool:
-        """Mark the slot at index and return True if it was previously empty."""
-
-    def _allocate(self) -> bytearray:
-        try:
-            return self._new_storage()
-        except (MemoryError, OverflowError) as exc:
-            raise AllocationError(
-                f"cannot allocate storage for {self._size} slots"
-            ) from exc
-
-    def _indexes(self, item: object) -> list[int]:
-        return hash_indexes(item, self._size, self._hash_count, self._seed)
-
-    def _describe(self) -> str:
-        return (
-            f"size={self._size}, hash_count={self._hash_count}, "
-            f"items={self._item_count}, fill={self.fill_ratio:.3f}"
-        )
 
     @property
     def size(self) -> int:
@@ -190,13 +109,21 @@ class BloomBase(MembershipFilter):
 
     @property
     def memory_bits(self) -> int:
+        """Theoretical storage requirement in bits."""
         return self._size * self.slot_bits
 
     @property
     def memory_bytes(self) -> int:
+        """Theoretical storage requirement in whole bytes."""
         return (self.memory_bits + 7) // 8
 
     def add(self, item: object) -> bool:
+        """Insert an item.
+
+        Returns:
+            True if at least one slot became occupied. False means the item
+            was already reported as present.
+        """
         changed = False
 
         for index in self._indexes(item):
@@ -208,15 +135,18 @@ class BloomBase(MembershipFilter):
 
         return changed
 
-    def __contains__(self, item: object) -> bool:
-        return all(self._is_occupied(index) for index in self._indexes(item))
+    def update(self, items: Iterable[object]) -> None:
+        """Insert every item from an iterable."""
+        for item in items:
+            self.add(item)
 
     def clear(self) -> None:
+        """Remove every item and reset all statistics."""
         self._storage = self._allocate()
         self._occupied = 0
         self._item_count = 0
 
-    def copy(self: FilterT) -> FilterT:
+    def copy(self) -> Self:
         """Return an independent copy that shares no mutable state."""
         clone = copy.copy(self)
         clone._storage = bytearray(self._storage)
@@ -241,5 +171,40 @@ class BloomBase(MembershipFilter):
         """Estimate the number of distinct inserted items from the fill ratio."""
         return estimate_item_count(self._size, self._hash_count, self.fill_ratio)
 
+    def __contains__(self, item: object) -> bool:
+        return all(self._is_occupied(index) for index in self._indexes(item))
+
+    def __len__(self) -> int:
+        return self._item_count
+
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self._describe()})"
+
+    @abstractmethod
+    def _new_storage(self) -> bytearray:
+        """Return freshly zeroed backing storage for size slots."""
+
+    @abstractmethod
+    def _is_occupied(self, index: int) -> bool:
+        """Return True if the slot at index is occupied."""
+
+    @abstractmethod
+    def _occupy(self, index: int) -> bool:
+        """Mark the slot at index and return True if it was previously empty."""
+
+    def _allocate(self) -> bytearray:
+        try:
+            return self._new_storage()
+        except (MemoryError, OverflowError) as exc:
+            raise AllocationError(
+                f"cannot allocate storage for {self._size} slots"
+            ) from exc
+
+    def _indexes(self, item: object) -> list[int]:
+        return hash_indexes(item, self._size, self._hash_count, self._seed)
+
+    def _describe(self) -> str:
+        return (
+            f"size={self._size}, hash_count={self._hash_count}, "
+            f"items={self._item_count}, fill={self.fill_ratio:.3f}"
+        )
