@@ -1,5 +1,0 @@
-strategy,queries,disk_lookups,wasted_lookups,lookups_avoided,avoided_pct,false_negatives,memory_bits,maintenance_ops
-no filter,100000,100000,79641,0,0.0,0,0,0
-standard stale,100000,35253,14894,64747,64.747,0,80000,20000
-standard rebuilt,100000,21022,663,78978,78.978,0,80000,48000
-counting,100000,20955,596,79045,79.045,0,320000,32000

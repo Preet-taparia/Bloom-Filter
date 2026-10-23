@@ -1,5 +1,0 @@
-counter_bits,memory_bits,memory_vs_standard,overflow_bound,avg_overflow_events,avg_max_counter,avg_saturated_counters
-2,100000,2.0,1.0,336,3,1719.4
-3,150000,3.0,0.5121418709950486,0,6.4,0.4
-4,200000,4.0,8.004434082834138e-11,0,6.4,0
-8,400000,8.0,0.0,0,6.4,0
