@@ -1,7 +1,7 @@
 import hashlib
 from math import gcd
 
-from Exceptions import InvalidItemError
+from .Exceptions import InvalidItemError
 
 MAX_SEED = (1 << 64) - 1
 

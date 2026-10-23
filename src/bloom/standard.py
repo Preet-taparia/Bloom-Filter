@@ -1,4 +1,4 @@
-from BaseBloomFilter import BloomBase
+from .BaseBloomFilter import BloomBase
 
 
 class BloomFilter(BloomBase):

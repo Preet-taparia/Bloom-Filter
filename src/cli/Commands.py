@@ -2,9 +2,9 @@ import argparse
 from collections.abc import Callable, Sequence
 from pathlib import Path
 
-from Experiments.CsvExport import write_csv
-from Experiments.Figures import plot_optimal_k, plot_sweep
-from Experiments.ParameterStudies import (
+from src.Experiments.CsvExport import write_csv
+from src.Experiments.Figures import plot_optimal_k, plot_sweep
+from src.Experiments.ParameterStudies import (
     optimal_k_study,
     sweep_hash_count,
     sweep_items,

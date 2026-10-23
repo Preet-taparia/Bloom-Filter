@@ -3,15 +3,15 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from typing import Any, Self
 
-from Exceptions import AllocationError
-from Hashing import MAX_SEED, hash_indexes
-from Theory import (
+from .Exceptions import AllocationError
+from .Hashing import MAX_SEED, hash_indexes
+from .Theory import (
     estimate_item_count,
     expected_false_positive_rate,
     optimal_hash_count,
     optimal_size,
 )
-from Bloom.Validation import require_int
+from .Validation import require_int
 
 
 class BloomBase(ABC):

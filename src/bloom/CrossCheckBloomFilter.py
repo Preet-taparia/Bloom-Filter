@@ -1,15 +1,15 @@
 from collections.abc import Iterable, Sequence
 
-from BaseBloomFilter import BloomBase
-from Exceptions import (
+from .BaseBloomFilter import BloomBase
+from .Exceptions import (
     IncompatibleFilterError,
     ParameterTypeError,
     ParameterValueError,
 )
-from Hashing import MAX_SEED
-from Standard import BloomFilter
-from Theory import combined_false_positive_rate, split_error_budget
-from Validation import require_int
+from .Hashing import MAX_SEED
+from .Standard import BloomFilter
+from .Theory import combined_false_positive_rate, split_error_budget
+from .Validation import require_int
 
 
 class CrossCheckedBloomFilter:

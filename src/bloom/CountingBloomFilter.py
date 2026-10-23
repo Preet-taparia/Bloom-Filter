@@ -1,6 +1,6 @@
-from BaseBloomFilter import BloomBase
-from Theory import counter_overflow_bound
-from Validation import require_int
+from .BaseBloomFilter import BloomBase
+from .Theory import counter_overflow_bound
+from .Validation import require_int
 
 
 class CountingBloomFilter(BloomBase):

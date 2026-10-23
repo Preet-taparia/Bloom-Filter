@@ -6,8 +6,9 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
-from FalsePositiveTrials import TrialResult
-from ParameterStudies import OptimalKSummary
+
+from .FalsePositiveTrials import TrialResult
+from .ParameterStudies import OptimalKSummary
 
 
 def _finish(figure: plt.Figure, path: Path) -> Path:

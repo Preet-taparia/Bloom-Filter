@@ -1,7 +1,7 @@
 import math
 from collections.abc import Iterable
 
-from Validation import (
+from .Validation import (
     require_fraction,
     require_int,
     require_open_probability,
