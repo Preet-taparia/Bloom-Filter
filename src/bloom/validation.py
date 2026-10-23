@@ -118,24 +118,6 @@ def require_fraction(name: str, value: object) -> float:
     return number
 
 
-def require_non_negative_float(name: str, value: object) -> float:
-    """Validate a finite number that is zero or greater.
-
-    Returns:
-        The value as a float.
-
-    Raises:
-        ParameterTypeError: If the value is not a number.
-        ParameterValueError: If the value is negative or not finite.
-    """
-    number = _require_number(name, value)
-
-    if number < 0.0:
-        raise _value_error(name, "zero or greater", value)
-
-    return number
-
-
 def require_choice(
     name: str,
     value: ChoiceT,

@@ -48,36 +48,6 @@ def optimal_size(capacity: int, error_rate: float) -> int:
     return max(1, math.ceil(-capacity * math.log(error_rate) / LN2_SQUARED))
 
 
-def optimal_capacity(size: int, error_rate: float) -> int:
-    """Return how many items fit in a filter while meeting an error rate.
-
-    This inverts optimal_size and rounds down so the target is respected.
-
-    Args:
-        size: Number of slots m in the filter.
-        error_rate: Target false positive probability, strictly between
-            0 and 1.
-
-    Raises:
-        InvalidParameterError: If an argument is invalid.
-    """
-    require_int("size", size, minimum=1)
-    error_rate = require_open_probability("error_rate", error_rate)
-
-    return max(1, math.floor(-size * LN2_SQUARED / math.log(error_rate)))
-
-
-def bits_per_item(error_rate: float) -> float:
-    """Return the optimal number of slots per item for an error rate.
-
-    Raises:
-        InvalidParameterError: If error_rate is not strictly between 0 and 1.
-    """
-    error_rate = require_open_probability("error_rate", error_rate)
-
-    return -math.log(error_rate) / LN2_SQUARED
-
-
 def expected_fill_ratio(size: int, hash_count: int, item_count: int) -> float:
     """Return the expected fraction of occupied slots after insertions.
 
