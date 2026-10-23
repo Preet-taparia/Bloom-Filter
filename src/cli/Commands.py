@@ -2,9 +2,22 @@ import argparse
 from collections.abc import Callable, Sequence
 from pathlib import Path
 
-from src.Experiments.CsvExport import write_csv
-from src.Experiments.Figures import plot_optimal_k, plot_sweep
-from src.Experiments.ParameterStudies import (
+from Experiments.StudyFigures import (
+    plot_churn,
+    plot_counter_widths,
+    plot_counting_comparison,
+    plot_cross_check,
+)
+
+from Experiments.CountingStudies import (
+    churn_study,
+    compare_standard_counting,
+    counter_width_study,
+)
+from Experiments.CrossCheckStudies import MEMBER_KINDS, cross_check_study
+from Experiments.CsvExport import write_csv
+from Experiments.Figures import plot_optimal_k, plot_sweep
+from Experiments.ParameterStudies import (
     optimal_k_study,
     sweep_hash_count,
     sweep_items,
@@ -119,6 +132,114 @@ def _run_optimal_k(args: argparse.Namespace) -> None:
         print(plot_optimal_k(rows, summaries, args.out_dir / "optimal_k.png"))
 
 
+def _run_compare_counting(args: argparse.Namespace) -> None:
+    rows = compare_standard_counting(
+        args.ratios,
+        args.n,
+        args.counter_bits,
+        args.queries,
+        args.trials,
+        args.seed,
+    )
+
+    for row in rows:
+        print(
+            f"m/n={row.bits_per_item:g} k={row.hash_count} "
+            f"standard={row.standard_rate:.6f} counting={row.counting_rate:.6f} "
+            f"theory={row.theoretical_rate:.6f} "
+            f"standard_bytes={row.standard_memory_bytes} "
+            f"counting_bytes={row.counting_memory_bytes} "
+            f"false_negatives={row.false_negatives}"
+        )
+
+    print(write_csv(rows, args.out_dir / "compare_counting.csv"))
+
+    if not args.no_plot:
+        print(plot_counting_comparison(rows, args.out_dir / "compare_counting.png"))
+
+
+def _run_counter_width(args: argparse.Namespace) -> None:
+    results = counter_width_study(
+        args.widths, args.m, args.k, args.n, args.trials, args.seed
+    )
+
+    for result in results:
+        print(
+            f"bits={result.counter_bits} bytes={result.memory_bytes} "
+            f"saturated={result.mean_saturated_counters:.1f} "
+            f"dropped={result.mean_overflow_events:.1f} "
+            f"max_counter={result.mean_max_counter:.1f} "
+            f"overflow_trials={result.overflow_trial_fraction:.2f} "
+            f"bound={result.overflow_bound:.4g} "
+            f"false_negatives={result.false_negatives}"
+        )
+
+    print(write_csv(results, args.out_dir / "counter_width.csv"))
+
+    if not args.no_plot:
+        print(plot_counter_widths(results, args.out_dir / "counter_width.png"))
+
+
+def _run_churn(args: argparse.Namespace) -> None:
+    results = churn_study(
+        args.m,
+        args.k,
+        args.live,
+        args.rounds,
+        args.churn_fraction,
+        args.probes,
+        args.counter_bits,
+        args.seed,
+    )
+
+    for result in results:
+        print(
+            f"round={result.round_number} "
+            f"counting_fp={result.counting_false_positive_rate:.6f} "
+            f"standard_fp={result.standard_false_positive_rate:.6f} "
+            f"counting_fill={result.counting_fill_ratio:.4f} "
+            f"standard_fill={result.standard_fill_ratio:.4f} "
+            f"stale={result.stale_positive_rate:.6f} "
+            f"saturated={result.saturated_counters} "
+            f"false_negatives={result.counting_false_negatives}"
+        )
+
+    print(write_csv(results, args.out_dir / "churn.csv"))
+
+    if not args.no_plot:
+        print(plot_churn(results, args.out_dir / "churn.png"))
+
+
+def _run_cross_check(args: argparse.Namespace) -> None:
+    results = cross_check_study(
+        args.kind,
+        args.filter_counts,
+        args.error_rates,
+        args.n,
+        args.queries,
+        args.trials,
+        args.seed,
+    )
+
+    for result in results:
+        print(
+            f"kind={result.kind} members={result.filter_count} "
+            f"target={result.error_rate:g} bytes={result.memory_bytes} "
+            f"combined={result.combined_rate:.6f} "
+            f"theory={result.theoretical_rate:.6f} "
+            f"member_rate={result.mean_member_rate:.6f} "
+            f"disagreement={result.disagreement_rate:.6f} "
+            f"catch={result.catch_rate:.4f} "
+            f"single_same_memory={result.single_filter_rate:.6f} "
+            f"false_negatives={result.false_negatives}"
+        )
+
+    print(write_csv(results, args.out_dir / f"cross_check_{args.kind}.csv"))
+
+    if not args.no_plot:
+        print(plot_cross_check(results, args.out_dir / f"cross_check_{args.kind}.png"))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="bloom")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -158,6 +279,44 @@ def build_parser() -> argparse.ArgumentParser:
     optimal.add_argument("--span", type=float, default=3.0)
     _add_common(optimal)
     optimal.set_defaults(handler=_run_optimal_k)
+
+    compare = commands.add_parser("compare-counting")
+    compare.add_argument("--n", type=int, default=5000)
+    compare.add_argument(
+        "--ratios", type=_float_list, default=_float_list("4,6,8,10,12,16")
+    )
+    compare.add_argument("--counter-bits", type=int, default=4)
+    _add_common(compare)
+    compare.set_defaults(handler=_run_compare_counting)
+
+    width = commands.add_parser("counter-width")
+    width.add_argument("--m", type=int, default=20000)
+    width.add_argument("--n", type=int, default=5000)
+    width.add_argument("--k", type=int, default=7)
+    width.add_argument("--widths", type=_int_list, default=_int_list("2,3,4,8"))
+    _add_common(width)
+    width.set_defaults(handler=_run_counter_width)
+
+    churn = commands.add_parser("churn")
+    churn.add_argument("--m", type=int, default=50000)
+    churn.add_argument("--k", type=int, default=7)
+    churn.add_argument("--live", type=int, default=5000)
+    churn.add_argument("--rounds", type=int, default=20)
+    churn.add_argument("--churn-fraction", type=float, default=0.2)
+    churn.add_argument("--probes", type=int, default=5000)
+    churn.add_argument("--counter-bits", type=int, default=4)
+    _add_common(churn)
+    churn.set_defaults(handler=_run_churn)
+
+    cross = commands.add_parser("cross-check")
+    cross.add_argument("--n", type=int, default=5000)
+    cross.add_argument(
+        "--error-rates", type=_float_list, default=_float_list("0.1,0.01,0.001")
+    )
+    cross.add_argument("--filter-counts", type=_int_list, default=_int_list("2,3,4"))
+    cross.add_argument("--kind", choices=MEMBER_KINDS, default="standard")
+    _add_common(cross)
+    cross.set_defaults(handler=_run_cross_check, queries=50000)
 
     return parser
 
