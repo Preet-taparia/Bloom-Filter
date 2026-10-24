@@ -118,6 +118,15 @@ def require_fraction(name: str, value: object) -> float:
     return number
 
 
+def require_non_negative_float(name: str, value: object) -> float:
+    number = _require_number(name, value)
+
+    if number < 0.0:
+        raise _value_error(name, "at least 0", value)
+
+    return number
+
+
 def require_choice(
     name: str,
     value: ChoiceT,

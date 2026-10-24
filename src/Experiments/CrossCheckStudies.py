@@ -114,7 +114,7 @@ def cross_check_point(
             single_size, single_hashes, item_count
         )
 
-    exposed = disagreement_total + accepted_total
+    wrongly_accepted_by_any  = disagreement_total + accepted_total
     total_queries = query_count * trials
 
     return CrossCheckResult(
@@ -130,7 +130,7 @@ def cross_check_point(
         theoretical_rate=theory,
         mean_member_rate=mean(member_rates),
         disagreement_rate=disagreement_total / total_queries,
-        catch_rate=disagreement_total / exposed if exposed else 1.0,
+        catch_rate=disagreement_total / wrongly_accepted_by_any  if wrongly_accepted_by_any  else 1.0,
         single_filter_rate=mean(single),
         single_filter_theory=single_theory,
         false_negatives=misses,

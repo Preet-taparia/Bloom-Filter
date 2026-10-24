@@ -2,7 +2,7 @@ import math
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 
-from src.Bloom.Theory import LN2, expected_false_positive_rate
+from Bloom.Theory import LN2, expected_false_positive_rate
 
 from .FalsePositiveTrials import TrialResult, measure
 
