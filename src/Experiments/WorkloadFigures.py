@@ -27,35 +27,44 @@ def plot_cache_results(
     path: Path,
 ) -> Path:
     figure, axes = plt.subplots(2, 2, figsize=(12, 9))
-    saved, wasted, memory, drift = axes.flatten()
-    strategies = list(dict.fromkeys(r.strategy for r in results if r.strategy != "none"))
+    saved, wasted, avoided, drift = axes.flatten()
+    strategies = list(
+        dict.fromkeys(r.strategy for r in results if r.strategy != "none")
+    )
 
     for strategy in strategies:
         group = [r for r in results if r.strategy == strategy]
-        xs = [r.bits_per_item for r in group]
+        xs = [r.filter_memory_bytes for r in group]
 
-        saved.plot(xs, [r.time_saved_fraction for r in group], marker="o", label=strategy)
+        saved.plot(
+            xs, [r.time_saved_fraction for r in group], marker="o", label=strategy
+        )
         wasted.plot(xs, [r.wasted_per_miss for r in group], marker="o", label=strategy)
-        memory.plot(xs, [r.filter_memory_bytes for r in group], marker="o", label=strategy)
+        avoided.plot(
+            xs,
+            [r.disk_lookups_avoided for r in group],
+            marker="o",
+            label=strategy,
+        )
 
-    saved.set_xlabel("slots per cached item m/n")
+    saved.set_xlabel("filter memory in bytes")
     saved.set_ylabel("fraction of total latency saved")
     saved.set_title("Latency saved against no filter")
     saved.grid(True, alpha=0.3)
     saved.legend()
 
     wasted.set_yscale("log")
-    wasted.set_xlabel("slots per cached item m/n")
+    wasted.set_xlabel("filter memory in bytes")
     wasted.set_ylabel("wasted disk lookups per cache miss")
-    wasted.set_title("Filter false positives in the cache")
+    wasted.set_title("Filter false positives at equal memory")
     wasted.grid(True, alpha=0.3)
     wasted.legend()
 
-    memory.set_xlabel("slots per cached item m/n")
-    memory.set_ylabel("filter memory in bytes")
-    memory.set_title("Memory cost of each strategy")
-    memory.grid(True, alpha=0.3)
-    memory.legend()
+    avoided.set_xlabel("filter memory in bytes")
+    avoided.set_ylabel("disk lookups avoided")
+    avoided.set_title("Disk lookups avoided at equal memory")
+    avoided.grid(True, alpha=0.3)
+    avoided.legend()
 
     for strategy in strategies:
         points = [
@@ -89,14 +98,18 @@ def plot_url_filter_results(
     positions = list(range(len(results)))
     width = 0.4
 
-    rates.plot(xs, [r.false_positive_rate for r in results], marker="o", label="per request")
+    rates.plot(
+        xs, [r.false_positive_rate for r in results], marker="o", label="per request"
+    )
     rates.plot(
         xs,
         [r.distinct_false_positive_rate for r in results],
         marker="s",
         label="per distinct URL",
     )
-    rates.plot(xs, [r.theoretical_rate for r in results], linestyle="--", label="theory")
+    rates.plot(
+        xs, [r.theoretical_rate for r in results], linestyle="--", label="theory"
+    )
     rates.set_yscale("log")
     rates.set_xlabel("slots per blocklist URL m/n")
     rates.set_ylabel("false positive rate")

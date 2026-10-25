@@ -6,6 +6,7 @@ from Bloom.CountingBloomFilter import CountingBloomFilter
 from Bloom.Standard import BloomFilter
 from Bloom.Theory import optimal_hash_count
 from Bloom.Validation import require_choice, require_int
+
 from .Workload import (
     CostModel,
     LruDiskCache,
@@ -142,6 +143,7 @@ def run_cache(
         ):
             tracker.clear()
             tracker.update(disk.keys())
+            filter_ms += cost.disk_ms + cost.memory_ms * len(disk)
 
         if position % window == 0:
             timeline.append(

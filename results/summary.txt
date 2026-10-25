@@ -1,0 +1,147 @@
+
+False positive rate against parameters
+======================================
+sweep over size
+  m=20000 k=7 n=5000 empirical=0.264820 theory=0.262840 false_negatives=0
+  m=30000 k=7 n=5000 empirical=0.074560 theory=0.073410 false_negatives=0
+  m=40000 k=7 n=5000 empirical=0.022960 theory=0.022930 false_negatives=0
+  m=50000 k=7 n=5000 empirical=0.008180 theory=0.008194 false_negatives=0
+  m=60000 k=7 n=5000 empirical=0.003420 theory=0.003294 false_negatives=0
+  m=80000 k=7 n=5000 empirical=0.000740 theory=0.000702 false_negatives=0
+  m=100000 k=7 n=5000 empirical=0.000300 theory=0.000196 false_negatives=0
+sweep over items
+  m=50000 k=7 n=1000 empirical=0.000010 theory=0.000001 false_negatives=0
+  m=50000 k=7 n=2000 empirical=0.000060 theory=0.000052 false_negatives=0
+  m=50000 k=7 n=3000 empirical=0.000630 theory=0.000558 false_negatives=0
+  m=50000 k=7 n=4000 empirical=0.002650 theory=0.002665 false_negatives=0
+  m=50000 k=7 n=5000 empirical=0.008180 theory=0.008194 false_negatives=0
+  m=50000 k=7 n=6000 empirical=0.019640 theory=0.019142 false_negatives=0
+  m=50000 k=7 n=8000 empirical=0.062270 theory=0.063002 false_negatives=0
+  m=50000 k=7 n=10000 empirical=0.136300 theory=0.137782 false_negatives=0
+  m=50000 k=7 n=12000 empirical=0.236010 theory=0.236034 false_negatives=0
+sweep over hashes
+  m=50000 k=1 n=5000 empirical=0.095000 theory=0.095163 false_negatives=0
+  m=50000 k=2 n=5000 empirical=0.033150 theory=0.032859 false_negatives=0
+  m=50000 k=3 n=5000 empirical=0.017610 theory=0.017411 false_negatives=0
+  m=50000 k=4 n=5000 empirical=0.012390 theory=0.011813 false_negatives=0
+  m=50000 k=5 n=5000 empirical=0.009930 theory=0.009431 false_negatives=0
+  m=50000 k=6 n=5000 empirical=0.008440 theory=0.008436 false_negatives=0
+  m=50000 k=7 n=5000 empirical=0.008180 theory=0.008194 false_negatives=0
+  m=50000 k=8 n=5000 empirical=0.008720 theory=0.008455 false_negatives=0
+  m=50000 k=9 n=5000 empirical=0.009130 theory=0.009127 false_negatives=0
+  m=50000 k=10 n=5000 empirical=0.009760 theory=0.010186 false_negatives=0
+  m=50000 k=11 n=5000 empirical=0.011460 theory=0.011650 false_negatives=0
+  m=50000 k=12 n=5000 empirical=0.013450 theory=0.013561 false_negatives=0
+  m=50000 k=13 n=5000 empirical=0.015790 theory=0.015980 false_negatives=0
+  m=50000 k=14 n=5000 empirical=0.018740 theory=0.018984 false_negatives=0
+  m=50000 k=15 n=5000 empirical=0.021600 theory=0.022658 false_negatives=0
+  m=50000 k=16 n=5000 empirical=0.027610 theory=0.027099 false_negatives=0
+  m=50000 k=17 n=5000 empirical=0.033140 theory=0.032407 false_negatives=0
+  m=50000 k=18 n=5000 empirical=0.039100 theory=0.038686 false_negatives=0
+  m=50000 k=19 n=5000 empirical=0.045980 theory=0.046041 false_negatives=0
+  m=50000 k=20 n=5000 empirical=0.054740 theory=0.054570 false_negatives=0
+optimal hash count
+  m/n=6 predicted=4.16 rounded=4 theory_best=4 empirical_best=4 rate_at_predicted=0.057390 best_rate=0.057390
+  m/n=8 predicted=5.55 rounded=6 theory_best=6 empirical_best=5 rate_at_predicted=0.021730 best_rate=0.021640
+  m/n=10 predicted=6.93 rounded=7 theory_best=7 empirical_best=7 rate_at_predicted=0.008540 best_rate=0.008540
+  m/n=12 predicted=8.32 rounded=8 theory_best=8 empirical_best=9 rate_at_predicted=0.003280 best_rate=0.003190
+  m/n=16 predicted=11.09 rounded=11 theory_best=11 empirical_best=12 rate_at_predicted=0.000550 best_rate=0.000460
+finished run_parameter_studies in 383.7 s
+
+Counting Bloom filter studies
+=============================
+standard against counting at equal slot count
+  m/n=4 k=3 standard=0.148150 counting=0.148150 theory=0.146892 standard_bytes=2500 counting_bytes=10000 false_negatives=0
+  m/n=6 k=4 standard=0.056510 counting=0.056510 theory=0.056057 standard_bytes=3750 counting_bytes=15000 false_negatives=0
+  m/n=8 k=6 standard=0.022520 counting=0.022520 theory=0.021577 standard_bytes=5000 counting_bytes=20000 false_negatives=0
+  m/n=10 k=7 standard=0.008180 counting=0.008180 theory=0.008194 standard_bytes=6250 counting_bytes=25000 false_negatives=0
+  m/n=12 k=8 standard=0.003100 counting=0.003100 theory=0.003142 standard_bytes=7500 counting_bytes=30000 false_negatives=0
+  m/n=16 k=11 standard=0.000580 counting=0.000580 theory=0.000459 standard_bytes=10000 counting_bytes=40000 false_negatives=0
+counter width
+  bits=2 bytes=5000 saturated=5105.2 dropped=2904.6 max_counter=3.0 overflow_trials=1.00 bound=1 false_negatives=0
+  bits=3 bytes=7500 saturated=45.6 dropped=10.6 max_counter=7.0 overflow_trials=1.00 bound=1 false_negatives=0
+  bits=4 bytes=10000 saturated=0.0 dropped=0.0 max_counter=9.0 overflow_trials=0.00 bound=7.455e-05 false_negatives=0
+  bits=8 bytes=20000 saturated=0.0 dropped=0.0 max_counter=9.0 overflow_trials=0.00 bound=0 false_negatives=0
+add and remove churn
+  round=1 counting_fp=0.010800 standard_fp=0.019800 counting_fill=0.5034 standard_fill=0.5672 stale=0.007000 saturated=0 false_negatives=0
+  round=2 counting_fp=0.009800 standard_fp=0.036000 counting_fill=0.5050 standard_fill=0.6244 stale=0.011500 saturated=0 false_negatives=0
+  round=3 counting_fp=0.011000 standard_fp=0.065400 counting_fill=0.5026 standard_fill=0.6738 stale=0.006333 saturated=0 false_negatives=0
+  round=4 counting_fp=0.012200 standard_fp=0.101600 counting_fill=0.5041 standard_fill=0.7181 stale=0.007000 saturated=0 false_negatives=0
+  round=5 counting_fp=0.007200 standard_fp=0.141200 counting_fill=0.5033 standard_fill=0.7546 stale=0.008200 saturated=0 false_negatives=0
+  round=6 counting_fp=0.009000 standard_fp=0.187000 counting_fill=0.5031 standard_fill=0.7872 stale=0.009600 saturated=0 false_negatives=0
+  round=7 counting_fp=0.009400 standard_fp=0.235200 counting_fill=0.5030 standard_fill=0.8151 stale=0.007800 saturated=0 false_negatives=0
+  round=8 counting_fp=0.008800 standard_fp=0.283200 counting_fill=0.5023 standard_fill=0.8382 stale=0.008400 saturated=0 false_negatives=0
+  round=9 counting_fp=0.008000 standard_fp=0.330800 counting_fill=0.5029 standard_fill=0.8596 stale=0.007600 saturated=0 false_negatives=0
+  round=10 counting_fp=0.006200 standard_fp=0.387400 counting_fill=0.5054 standard_fill=0.8781 stale=0.007600 saturated=0 false_negatives=0
+  round=11 counting_fp=0.006400 standard_fp=0.444200 counting_fill=0.5035 standard_fill=0.8936 stale=0.006200 saturated=0 false_negatives=0
+  round=12 counting_fp=0.008000 standard_fp=0.505000 counting_fill=0.5036 standard_fill=0.9083 stale=0.006600 saturated=0 false_negatives=0
+  round=13 counting_fp=0.007600 standard_fp=0.556000 counting_fill=0.5037 standard_fill=0.9202 stale=0.007400 saturated=0 false_negatives=0
+  round=14 counting_fp=0.008200 standard_fp=0.602600 counting_fill=0.5038 standard_fill=0.9306 stale=0.010000 saturated=0 false_negatives=0
+  round=15 counting_fp=0.008800 standard_fp=0.644000 counting_fill=0.5029 standard_fill=0.9394 stale=0.008600 saturated=0 false_negatives=0
+  round=16 counting_fp=0.007600 standard_fp=0.686600 counting_fill=0.5030 standard_fill=0.9478 stale=0.007800 saturated=0 false_negatives=0
+  round=17 counting_fp=0.008200 standard_fp=0.719000 counting_fill=0.5010 standard_fill=0.9541 stale=0.010800 saturated=0 false_negatives=0
+  round=18 counting_fp=0.007400 standard_fp=0.750200 counting_fill=0.5035 standard_fill=0.9606 stale=0.011600 saturated=0 false_negatives=0
+  round=19 counting_fp=0.004200 standard_fp=0.779800 counting_fill=0.5025 standard_fill=0.9658 stale=0.010000 saturated=0 false_negatives=0
+  round=20 counting_fp=0.007800 standard_fp=0.804000 counting_fill=0.5032 standard_fill=0.9701 stale=0.010000 saturated=0 false_negatives=0
+finished run_counting_studies in 37.6 s
+
+Cross checked Bloom filter studies
+==================================
+member kind standard
+  members=2 target=0.1 bytes=2996 combined=0.103420 theory=0.102588 member_rate=0.322320 disagreement=0.437800 catch=0.8089 single_same_memory=0.101752 false_negatives=0
+  members=3 target=0.1 bytes=2997 combined=0.101236 theory=0.100701 member_rate=0.465552 disagreement=0.746480 catch=0.8806 single_same_memory=0.101752 false_negatives=0
+  members=4 target=0.1 bytes=2996 combined=0.103044 theory=0.102588 member_rate=0.566333 disagreement=0.861356 catch=0.8932 single_same_memory=0.101752 false_negatives=0
+  members=2 target=0.01 bytes=5992 combined=0.010288 theory=0.010143 member_rate=0.100842 disagreement=0.181108 catch=0.9462 single_same_memory=0.009820 false_negatives=0
+  members=3 target=0.01 bytes=5991 combined=0.010524 theory=0.010141 member_rate=0.217628 disagreement=0.510412 catch=0.9798 single_same_memory=0.009984 false_negatives=0
+  members=4 target=0.01 bytes=5992 combined=0.010796 theory=0.010524 member_rate=0.321065 disagreement=0.775856 catch=0.9863 single_same_memory=0.009984 false_negatives=0
+  members=2 target=0.001 bytes=8986 combined=0.000980 theory=0.001000 member_rate=0.031174 disagreement=0.060388 catch=0.9840 single_same_memory=0.001020 false_negatives=0
+  members=3 target=0.001 bytes=8988 combined=0.001184 theory=0.001021 member_rate=0.101155 disagreement=0.272564 catch=0.9957 single_same_memory=0.000996 false_negatives=0
+  members=4 target=0.001 bytes=8988 combined=0.001304 theory=0.001100 member_rate=0.182081 disagreement=0.549980 catch=0.9976 single_same_memory=0.001020 false_negatives=0
+member kind counting
+  members=2 target=0.1 bytes=11982 combined=0.103420 theory=0.102588 member_rate=0.322320 disagreement=0.437800 catch=0.8089 single_same_memory=0.000116 false_negatives=0
+  members=3 target=0.1 bytes=11982 combined=0.101236 theory=0.100701 member_rate=0.465552 disagreement=0.746480 catch=0.8806 single_same_memory=0.000116 false_negatives=0
+  members=4 target=0.1 bytes=11984 combined=0.103044 theory=0.102588 member_rate=0.566333 disagreement=0.861356 catch=0.8932 single_same_memory=0.000116 false_negatives=0
+  members=2 target=0.01 bytes=23964 combined=0.010288 theory=0.010143 member_rate=0.100842 disagreement=0.181108 catch=0.9462 single_same_memory=0.000004 false_negatives=0
+  members=3 target=0.01 bytes=23964 combined=0.010524 theory=0.010141 member_rate=0.217628 disagreement=0.510412 catch=0.9798 single_same_memory=0.000000 false_negatives=0
+  members=4 target=0.01 bytes=23964 combined=0.010796 theory=0.010524 member_rate=0.321065 disagreement=0.775856 catch=0.9863 single_same_memory=0.000000 false_negatives=0
+  members=2 target=0.001 bytes=35944 combined=0.000980 theory=0.001000 member_rate=0.031174 disagreement=0.060388 catch=0.9840 single_same_memory=0.000000 false_negatives=0
+  members=3 target=0.001 bytes=35946 combined=0.001184 theory=0.001021 member_rate=0.101155 disagreement=0.272564 catch=0.9957 single_same_memory=0.000004 false_negatives=0
+  members=4 target=0.001 bytes=35944 combined=0.001304 theory=0.001100 member_rate=0.182081 disagreement=0.549980 catch=0.9976 single_same_memory=0.000000 false_negatives=0
+member kind mixed
+  members=2 target=0.1 bytes=7489 combined=0.103420 theory=0.102588 member_rate=0.322320 disagreement=0.437800 catch=0.8089 single_same_memory=0.003200 false_negatives=0
+  members=3 target=0.1 bytes=5992 combined=0.101236 theory=0.100701 member_rate=0.465552 disagreement=0.746480 catch=0.8806 single_same_memory=0.009984 false_negatives=0
+  members=4 target=0.1 bytes=7490 combined=0.103044 theory=0.102588 member_rate=0.566333 disagreement=0.861356 catch=0.8932 single_same_memory=0.003200 false_negatives=0
+  members=2 target=0.01 bytes=14978 combined=0.010288 theory=0.010143 member_rate=0.100842 disagreement=0.181108 catch=0.9462 single_same_memory=0.000008 false_negatives=0
+  members=3 target=0.01 bytes=11982 combined=0.010524 theory=0.010141 member_rate=0.217628 disagreement=0.510412 catch=0.9798 single_same_memory=0.000116 false_negatives=0
+  members=4 target=0.01 bytes=14978 combined=0.010796 theory=0.010524 member_rate=0.321065 disagreement=0.775856 catch=0.9863 single_same_memory=0.000024 false_negatives=0
+  members=2 target=0.001 bytes=22465 combined=0.000980 theory=0.001000 member_rate=0.031174 disagreement=0.060388 catch=0.9840 single_same_memory=0.000000 false_negatives=0
+  members=3 target=0.001 bytes=17974 combined=0.001184 theory=0.001021 member_rate=0.101155 disagreement=0.272564 catch=0.9957 single_same_memory=0.000008 false_negatives=0
+  members=4 target=0.001 bytes=22466 combined=0.001304 theory=0.001100 member_rate=0.182081 disagreement=0.549980 catch=0.9976 single_same_memory=0.000000 false_negatives=0
+finished run_cross_check_studies in 440.8 s
+
+Web cache simulation
+====================
+  strategy=none m/n=0 hit_rate=0.6149 disk_lookups=50000 avoided=0 wasted=0 wasted_per_miss=0.0000 false_negatives=0 total_ms=1790347 time_saved=0.0000 filter_bytes=0 fill=0.0000
+  strategy=standard m/n=4 hit_rate=0.6149 disk_lookups=45192 avoided=4808 wasted=14447 wasted_per_miss=0.7503 false_negatives=0 total_ms=1766333 time_saved=0.0134 filter_bytes=1000 fill=0.9909
+  strategy=rebuild m/n=4 hit_rate=0.6149 disk_lookups=36868 avoided=13132 wasted=6122 wasted_per_miss=0.3180 false_negatives=0 total_ms=1724772 time_saved=0.0366 filter_bytes=1000 fill=0.5267
+  strategy=counting m/n=4 hit_rate=0.6149 disk_lookups=33373 avoided=16627 wasted=2627 wasted_per_miss=0.1365 false_negatives=0 total_ms=1707237 time_saved=0.0464 filter_bytes=4000 fill=0.5267
+  strategy=standard m/n=8 hit_rate=0.6149 disk_lookups=43624 avoided=6376 wasted=12878 wasted_per_miss=0.6688 false_negatives=0 total_ms=1758490 time_saved=0.0178 filter_bytes=2000 fill=0.9911
+  strategy=rebuild m/n=8 hit_rate=0.6149 disk_lookups=33760 avoided=16240 wasted=3014 wasted_per_miss=0.1565 false_negatives=0 total_ms=1709230 time_saved=0.0453 filter_bytes=2000 fill=0.5256
+  strategy=counting m/n=8 hit_rate=0.6149 disk_lookups=31127 avoided=18873 wasted=382 wasted_per_miss=0.0198 false_negatives=0 total_ms=1696008 time_saved=0.0527 filter_bytes=8000 fill=0.5256
+  strategy=standard m/n=12 hit_rate=0.6149 disk_lookups=42163 avoided=7837 wasted=11418 wasted_per_miss=0.5930 false_negatives=0 total_ms=1751188 time_saved=0.0219 filter_bytes=3000 fill=0.9854
+  strategy=rebuild m/n=12 hit_rate=0.6149 disk_lookups=32771 avoided=17229 wasted=2025 wasted_per_miss=0.1052 false_negatives=0 total_ms=1704287 time_saved=0.0481 filter_bytes=3000 fill=0.4868
+  strategy=counting m/n=12 hit_rate=0.6149 disk_lookups=30798 avoided=19202 wasted=52 wasted_per_miss=0.0027 false_negatives=0 total_ms=1694362 time_saved=0.0536 filter_bytes=12000 fill=0.4868
+  strategy=standard m/n=16 hit_rate=0.6149 disk_lookups=41600 avoided=8400 wasted=10855 wasted_per_miss=0.5637 false_negatives=0 total_ms=1748373 time_saved=0.0234 filter_bytes=4000 fill=0.9882
+  strategy=rebuild m/n=16 hit_rate=0.6149 disk_lookups=32543 avoided=17457 wasted=1797 wasted_per_miss=0.0933 false_negatives=0 total_ms=1703145 time_saved=0.0487 filter_bytes=4000 fill=0.4964
+  strategy=counting m/n=16 hit_rate=0.6149 disk_lookups=30756 avoided=19244 wasted=10 wasted_per_miss=0.0005 false_negatives=0 total_ms=1694152 time_saved=0.0537 filter_bytes=16000 fill=0.4964
+finished run_cache_simulation in 54.8 s
+
+URL filter simulation
+=====================
+  m/n=4 k=3 blocked=2004 missed=0 remote_queries=17150 avoided=0.8285 fp_request=0.154560 fp_distinct=0.148191 theory=0.146892 time_saved=0.8285 filter_bytes=5000 set_bytes=1302254 memory_ratio=260.5
+  m/n=6 k=4 blocked=2004 missed=0 remote_queries=8280 avoided=0.9172 fp_request=0.064047 fp_distinct=0.056460 theory=0.056057 time_saved=0.9172 filter_bytes=7500 set_bytes=1302254 memory_ratio=173.6
+  m/n=8 k=6 blocked=2004 missed=0 remote_queries=3999 avoided=0.9600 fp_request=0.020359 fp_distinct=0.021758 theory=0.021577 time_saved=0.9600 filter_bytes=10000 set_bytes=1302254 memory_ratio=130.2
+  m/n=10 k=7 blocked=2004 missed=0 remote_queries=2843 avoided=0.9716 fp_request=0.008557 fp_distinct=0.008291 theory=0.008194 time_saved=0.9716 filter_bytes=12500 set_bytes=1302254 memory_ratio=104.2
+  m/n=12 k=8 blocked=2004 missed=0 remote_queries=2508 avoided=0.9749 fp_request=0.005140 fp_distinct=0.003068 theory=0.003142 time_saved=0.9749 filter_bytes=15000 set_bytes=1302254 memory_ratio=86.8
+  m/n=16 k=11 blocked=2004 missed=0 remote_queries=2030 avoided=0.9797 fp_request=0.000263 fp_distinct=0.000513 theory=0.000459 time_saved=0.9797 filter_bytes=20000 set_bytes=1302254 memory_ratio=65.1
+finished run_url_filter_simulation in 87.3 s
