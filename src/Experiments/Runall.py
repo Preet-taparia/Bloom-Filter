@@ -1,6 +1,13 @@
+import argparse
+import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+
+# Support direct execution from src/Experiments as well as python -m.
+if __name__ == "__main__" and not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    __package__ = "src.Experiments"
 
 from .CacheSimulation import ACTIVE_STRATEGIES, simulate_cache
 from .CountingStudies import (
@@ -367,3 +374,42 @@ def run_all(out_dir: Path = Path("results"), settings: RunSettings = RunSettings
         report.line(f"finished {step.__name__} in {time.perf_counter() - started:.1f} s")
 
     return report.save(out_dir / "summary.txt")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run all Bloom filter experiments.")
+    parser.add_argument(
+        "out_dir",
+        nargs="?",
+        type=Path,
+        default=Path(__file__).resolve().parents[2] / "results",
+        help="output directory (default: the project's results directory)",
+    )
+    from ..bloom.hashing import ALGORITHMS, DEFAULT_ALGORITHM
+    parser.add_argument("--hash", choices=(*ALGORITHMS, "all"), default="blake2b")
+    parser.add_argument("--compare-only", action="store_true", help="run only the matched hash benchmark")
+    parser.add_argument("--items", type=int, default=2000, help="items in hash benchmark")
+    parser.add_argument("--queries", type=int, default=10000, help="absent probes in hash benchmark")
+    parser.add_argument("--trials", type=int, default=3, help="hash benchmark repetitions")
+    parser.add_argument("--filter", dest="filter_type", choices=("standard", "counting"), default="standard", help="filter used in the hash comparison")
+    parser.add_argument("--counter-bits", type=int, choices=range(1, 9), default=4, help="counting comparison counter width (default: 4)")
+    args = parser.parse_args()
+    if min(args.items, args.queries, args.trials) < 1:
+        parser.error("items, queries and trials must be positive")
+    algorithms = ALGORITHMS if args.hash == "all" else (args.hash,)
+    if not args.compare_only:
+        for algorithm in algorithms:
+            token = DEFAULT_ALGORITHM.set(algorithm)
+            try:
+                destination = args.out_dir / algorithm if args.hash == "all" else args.out_dir
+                print(f"Running full suite with {algorithm}", flush=True)
+                print(f"summary written to {run_all(destination)}")
+            finally:
+                DEFAULT_ALGORITHM.reset(token)
+    if args.hash != "blake2b" or args.compare_only or args.filter_type == "counting":
+        from .HashComparison import compare
+        print(f"Hash comparison written to {compare(algorithms, args.out_dir, args.items, args.queries, args.trials, filter_type=args.filter_type, counter_bits=args.counter_bits)}")
+
+
+if __name__ == "__main__":
+    main()

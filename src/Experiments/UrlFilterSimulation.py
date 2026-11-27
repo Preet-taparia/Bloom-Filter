@@ -4,9 +4,9 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from statistics import mean
 
-from Bloom.Standard import BloomFilter
-from Bloom.Theory import expected_false_positive_rate, optimal_hash_count
-from Bloom.Validation import require_int
+from ..bloom.standard import BloomFilter
+from ..bloom.theory import expected_false_positive_rate, optimal_hash_count
+from ..bloom.validation import require_int
 
 from .Workload import (
     CostModel,

@@ -5,7 +5,7 @@ from dataclasses import dataclass, fields
 from itertools import accumulate
 from statistics import mean
 
-from Bloom.Validation import require_int, require_non_negative_float
+from ..bloom.validation import require_int, require_non_negative_float
 
 
 @dataclass(frozen=True)

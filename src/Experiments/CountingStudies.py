@@ -3,10 +3,10 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from statistics import mean
 
-from Bloom.CountingBloomFilter import CountingBloomFilter
-from Bloom.Standard import BloomFilter
-from Bloom.Theory import optimal_hash_count
-from Experiments.FalsePositiveTrials import measure, member_items, probe_items
+from ..bloom.CountingBloomFilter import CountingBloomFilter
+from ..bloom.standard import BloomFilter
+from ..bloom.theory import optimal_hash_count
+from .FalsePositiveTrials import measure, member_items, probe_items
 
 
 @dataclass(frozen=True)

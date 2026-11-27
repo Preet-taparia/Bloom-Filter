@@ -2,9 +2,9 @@ import math
 from dataclasses import dataclass
 from statistics import mean, pstdev
 
-from Bloom.BaseBloomFilter import BloomBase
-from Bloom.Standard import BloomFilter
-from Bloom.Theory import expected_false_positive_rate
+from ..bloom.BaseBloomFilter import BloomBase
+from ..bloom.standard import BloomFilter
+from ..bloom.theory import expected_false_positive_rate
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,15 @@
+{
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "algorithms": [
+    "murmur3",
+    "xxhash",
+    "fnv1a",
+    "md5",
+    "blake2b"
+  ],
+  "items": 2000,
+  "queries": 10000,
+  "trials": 3,
+  "implementation": "MurmurHash3 x86-32 and xxHash32: two seeded pure-Python hashes; FNV-1a 64: two domain-prefixed pure-Python hashes; MD5 and BLAKE2b: native hashlib split into two 64-bit words. BLAKE2b uses the original seed salt; other hashes include the seed in input. Execution time in milliseconds covers insertion and all present/absent queries, excluding input generation, allocation and output. Timings are implementation-specific."
+}
