@@ -7,12 +7,12 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 
-from Experiments.CountingStudies import (
+from .CountingStudies import (
     ChurnResult,
     CounterWidthResult,
     CountingComparison,
 )
-from Experiments.CrossCheckStudies import CrossCheckResult
+from .CrossCheckStudies import CrossCheckResult
 
 
 def _finish(figure: plt.Figure, path: Path) -> Path:

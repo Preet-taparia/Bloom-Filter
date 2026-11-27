@@ -1,6 +1,6 @@
 from .BaseBloomFilter import BloomBase
-from .Theory import counter_overflow_bound
-from .Validation import require_int
+from .theory import counter_overflow_bound
+from .validation import require_int
 
 
 class CountingBloomFilter(BloomBase):
@@ -31,13 +31,14 @@ class CountingBloomFilter(BloomBase):
         hash_count: int,
         seed: int = 0,
         counter_bits: int = 4,
+        hash_algorithm: str | None = None,
     ) -> None:
         self._counter_bits = require_int(
             "counter_bits", counter_bits, minimum=1, maximum=8
         )
         self._max_value = (1 << self._counter_bits) - 1
         self._overflow_events = 0
-        super().__init__(size, hash_count, seed)
+        super().__init__(size, hash_count, seed, hash_algorithm)
 
     @property
     def slot_bits(self) -> int:

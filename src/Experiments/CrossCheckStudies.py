@@ -2,13 +2,13 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from statistics import mean, stdev
 
-from Bloom.BaseBloomFilter import BloomBase
-from Bloom.CountingBloomFilter import CountingBloomFilter
-from Bloom.CrossCheckBloomFilter import CrossCheckedBloomFilter
-from Bloom.Standard import BloomFilter
-from Bloom.Theory import expected_false_positive_rate, optimal_hash_count
-from Bloom.Validation import require_choice
-from Experiments.FalsePositiveTrials import member_items, probe_items, run_trial
+from ..bloom.BaseBloomFilter import BloomBase
+from ..bloom.CountingBloomFilter import CountingBloomFilter
+from ..bloom.CrossCheckBloomFilter import CrossCheckedBloomFilter
+from ..bloom.standard import BloomFilter
+from ..bloom.theory import expected_false_positive_rate, optimal_hash_count
+from ..bloom.validation import require_choice
+from .FalsePositiveTrials import member_items, probe_items, run_trial
 
 MEMBER_KINDS = ("standard", "counting", "mixed")
 SEED_STRIDE = 100

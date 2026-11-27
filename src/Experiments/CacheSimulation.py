@@ -1,11 +1,11 @@
 from collections.abc import Sequence
 from dataclasses import dataclass, replace
 
-from Bloom.BaseBloomFilter import BloomBase
-from Bloom.CountingBloomFilter import CountingBloomFilter
-from Bloom.Standard import BloomFilter
-from Bloom.Theory import optimal_hash_count
-from Bloom.Validation import require_choice, require_int
+from ..bloom.BaseBloomFilter import BloomBase
+from ..bloom.CountingBloomFilter import CountingBloomFilter
+from ..bloom.standard import BloomFilter
+from ..bloom.theory import optimal_hash_count
+from ..bloom.validation import require_choice, require_int
 
 from .Workload import (
     CostModel,

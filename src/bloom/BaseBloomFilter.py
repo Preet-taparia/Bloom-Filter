@@ -3,15 +3,15 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from typing import Any, Self
 
-from .Exceptions import AllocationError
-from .Hashing import MAX_SEED, hash_indexes
-from .Theory import (
+from .exceptions import AllocationError
+from .hashing import MAX_SEED, hash_indexes, ALGORITHMS, DEFAULT_ALGORITHM
+from .theory import (
     estimate_item_count,
     expected_false_positive_rate,
     optimal_hash_count,
     optimal_size,
 )
-from .Validation import require_int
+from .validation import require_int
 
 
 class BloomBase(ABC):
@@ -37,7 +37,10 @@ class BloomBase(ABC):
         AllocationError: If the storage cannot be allocated.
     """
 
-    def __init__(self, size: int, hash_count: int, seed: int = 0) -> None:
+    def __init__(self, size: int, hash_count: int, seed: int = 0, hash_algorithm: str | None = None) -> None:
+        self.hash_algorithm = hash_algorithm or DEFAULT_ALGORITHM.get()
+        if self.hash_algorithm not in ALGORITHMS:
+            raise ValueError(f"Unknown hash algorithm: {self.hash_algorithm}")
         self._size = require_int("size", size, minimum=1)
         self._hash_count = require_int("hash_count", hash_count, minimum=1)
         self._seed = require_int("seed", seed, minimum=0, maximum=MAX_SEED)
@@ -201,7 +204,7 @@ class BloomBase(ABC):
             ) from exc
 
     def _indexes(self, item: object) -> list[int]:
-        return hash_indexes(item, self._size, self._hash_count, self._seed)
+        return hash_indexes(item, self._size, self._hash_count, self._seed, self.hash_algorithm)
 
     def _describe(self) -> str:
         return (

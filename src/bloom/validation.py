@@ -3,7 +3,7 @@ import reprlib
 from collections.abc import Collection
 from typing import TypeVar
 
-from .Exceptions import ParameterTypeError, ParameterValueError
+from .exceptions import ParameterTypeError, ParameterValueError
 
 ChoiceT = TypeVar("ChoiceT")
 

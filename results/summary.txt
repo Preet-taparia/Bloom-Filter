@@ -46,7 +46,7 @@ optimal hash count
   m/n=10 predicted=6.93 rounded=7 theory_best=7 empirical_best=7 rate_at_predicted=0.008540 best_rate=0.008540
   m/n=12 predicted=8.32 rounded=8 theory_best=8 empirical_best=9 rate_at_predicted=0.003280 best_rate=0.003190
   m/n=16 predicted=11.09 rounded=11 theory_best=11 empirical_best=12 rate_at_predicted=0.000550 best_rate=0.000460
-finished run_parameter_studies in 383.7 s
+finished run_parameter_studies in 34.4 s
 
 Counting Bloom filter studies
 =============================
@@ -83,7 +83,7 @@ add and remove churn
   round=18 counting_fp=0.007400 standard_fp=0.750200 counting_fill=0.5035 standard_fill=0.9606 stale=0.011600 saturated=0 false_negatives=0
   round=19 counting_fp=0.004200 standard_fp=0.779800 counting_fill=0.5025 standard_fill=0.9658 stale=0.010000 saturated=0 false_negatives=0
   round=20 counting_fp=0.007800 standard_fp=0.804000 counting_fill=0.5032 standard_fill=0.9701 stale=0.010000 saturated=0 false_negatives=0
-finished run_counting_studies in 37.6 s
+finished run_counting_studies in 4.1 s
 
 Cross checked Bloom filter studies
 ==================================
@@ -117,7 +117,7 @@ member kind mixed
   members=2 target=0.001 bytes=22465 combined=0.000980 theory=0.001000 member_rate=0.031174 disagreement=0.060388 catch=0.9840 single_same_memory=0.000000 false_negatives=0
   members=3 target=0.001 bytes=17974 combined=0.001184 theory=0.001021 member_rate=0.101155 disagreement=0.272564 catch=0.9957 single_same_memory=0.000008 false_negatives=0
   members=4 target=0.001 bytes=22466 combined=0.001304 theory=0.001100 member_rate=0.182081 disagreement=0.549980 catch=0.9976 single_same_memory=0.000000 false_negatives=0
-finished run_cross_check_studies in 440.8 s
+finished run_cross_check_studies in 48.5 s
 
 Web cache simulation
 ====================
@@ -134,7 +134,7 @@ Web cache simulation
   strategy=standard m/n=16 hit_rate=0.6149 disk_lookups=41600 avoided=8400 wasted=10855 wasted_per_miss=0.5637 false_negatives=0 total_ms=1748373 time_saved=0.0234 filter_bytes=4000 fill=0.9882
   strategy=rebuild m/n=16 hit_rate=0.6149 disk_lookups=32543 avoided=17457 wasted=1797 wasted_per_miss=0.0933 false_negatives=0 total_ms=1703145 time_saved=0.0487 filter_bytes=4000 fill=0.4964
   strategy=counting m/n=16 hit_rate=0.6149 disk_lookups=30756 avoided=19244 wasted=10 wasted_per_miss=0.0005 false_negatives=0 total_ms=1694152 time_saved=0.0537 filter_bytes=16000 fill=0.4964
-finished run_cache_simulation in 54.8 s
+finished run_cache_simulation in 5.7 s
 
 URL filter simulation
 =====================
@@ -144,4 +144,4 @@ URL filter simulation
   m/n=10 k=7 blocked=2004 missed=0 remote_queries=2843 avoided=0.9716 fp_request=0.008557 fp_distinct=0.008291 theory=0.008194 time_saved=0.9716 filter_bytes=12500 set_bytes=1302254 memory_ratio=104.2
   m/n=12 k=8 blocked=2004 missed=0 remote_queries=2508 avoided=0.9749 fp_request=0.005140 fp_distinct=0.003068 theory=0.003142 time_saved=0.9749 filter_bytes=15000 set_bytes=1302254 memory_ratio=86.8
   m/n=16 k=11 blocked=2004 missed=0 remote_queries=2030 avoided=0.9797 fp_request=0.000263 fp_distinct=0.000513 theory=0.000459 time_saved=0.9797 filter_bytes=20000 set_bytes=1302254 memory_ratio=65.1
-finished run_url_filter_simulation in 87.3 s
+finished run_url_filter_simulation in 8.6 s

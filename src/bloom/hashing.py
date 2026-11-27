@@ -1,7 +1,29 @@
-import hashlib
 from math import gcd
 
-from .Exceptions import InvalidItemError
+from .exceptions import InvalidItemError
+
+from contextvars import ContextVar
+from .HashAlgorithms import murmur3, xxhash, fnv1a, md5, blake2b
+
+ALGORITHMS = ("murmur3", "xxhash", "fnv1a", "md5", "blake2b")
+DEFAULT_ALGORITHM = ContextVar("hash_algorithm", default="blake2b")
+
+
+def hash_pair(data: bytes, seed: int, algorithm: str) -> tuple[int, int]:
+    payload = seed.to_bytes(8, "big") + data
+    if algorithm in ("murmur3", "xxhash"):
+        function = murmur3 if algorithm == "murmur3" else xxhash
+        return function(payload, 0), function(payload, 0x9e3779b9)
+    if algorithm == "fnv1a":
+        return fnv1a(b"\x00" + payload), fnv1a(b"\x01" + payload)
+    if algorithm == "md5":
+        digest = md5(payload)
+    elif algorithm == "blake2b":
+        digest = blake2b(data, digest_size=16, salt=seed.to_bytes(8, "big"))
+    else:
+        raise ValueError(f"Unknown hash algorithm: {algorithm}")
+    return int.from_bytes(digest[:8], "big"), int.from_bytes(digest[8:], "big")
+
 
 MAX_SEED = (1 << 64) - 1
 
@@ -66,37 +88,15 @@ def hash_indexes(
     size: int,
     hash_count: int,
     seed: int = 0,
+    algorithm: str = "blake2b",
 ) -> list[int]:
-    """Derive array positions for an item using double hashing.
+    """Derive positions using the selected hash pair and double hashing.
 
-    One keyed BLAKE2b digest is split into two independent 64 bit values.
-    The first gives the starting position and the second gives the step.
-    The i th position is start plus i times step, reduced modulo size. The
-    step is adjusted to be coprime to size, so positions are distinct for
-    any hash_count up to size. This is the Kirsch and Mitzenmacher scheme,
-    which matches the false positive rate of hash_count independent hash
-    functions while computing only one digest.
-
-    Args:
-        item: The item to hash.
-        size: Number of slots in the target array, at least one.
-        hash_count: How many positions to produce, at least one.
-        seed: Value in the range 0 to MAX_SEED that selects an independent
-            hash family. Callers are expected to have validated it.
-
-    Returns:
-        A list of hash_count positions, each in the range 0 to size minus 1.
-
-    Raises:
-        InvalidItemError: If the item type is unsupported.
+    The step is adjusted to be coprime to size, so positions do not repeat
+    when hash_count <= size. Callers validate size, hash_count and seed.
+    BLAKE2b remains the backward-compatible default.
     """
-    digest = hashlib.blake2b(
-        item_to_bytes(item),
-        digest_size=16,
-        salt=seed.to_bytes(8, "big"),
-    ).digest()
-
-    start = int.from_bytes(digest[:8], "big") % size
-    step = coprime_step(int.from_bytes(digest[8:], "big"), size)
-
+    first, second = hash_pair(item_to_bytes(item), seed, algorithm)
+    start = first % size
+    step = coprime_step(second, size)
     return [(start + i * step) % size for i in range(hash_count)]
